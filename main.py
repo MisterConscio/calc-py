@@ -1,21 +1,18 @@
 import sys
 
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow, QWidget, QVBoxLayout
+from PySide6.QtWidgets import QApplication, QLabel
+
+from main_window import MainWindow
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    window = QMainWindow()
-    window.setWindowTitle("Calculadora")
-    central_widget = QWidget()
-
-    v_layout = QVBoxLayout()
-    central_widget.setLayout(v_layout)
+    window = MainWindow()
 
     label = QLabel("Calculadora em Python")
-    v_layout.addWidget(label)
+    label.setStyleSheet('font-size: 48px')
+    window.v_layout.addWidget(label)
 
-    window.setCentralWidget(central_widget)
     window.show()
 
     app.exec()
