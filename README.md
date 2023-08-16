@@ -11,3 +11,9 @@ python -m venv venv && source /venv/bin/activate
 ```console
 pip install --requirement requirements.txt
 ```
+
+## Running
+
+```console
+python main.py
+```
