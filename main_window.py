@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout
 
+
 class MainWindow(QMainWindow):
     def __init__(self, parent: QWidget | None = None, *args, **kwags) -> None:
         super().__init__(parent, *args, **kwags)
@@ -19,4 +20,3 @@ class MainWindow(QMainWindow):
 
     def addToVLayout(self, widget: QWidget):
         self.v_layout.addWidget(widget)
-
