@@ -5,7 +5,6 @@ class MainWindow(QMainWindow):
         super().__init__(parent, *args, **kwags)
 
         self.setWindowTitle("Calculadora")
-        self.setFixedSize(421, 455)
 
         self.central_widget = QWidget()
 
@@ -13,3 +12,7 @@ class MainWindow(QMainWindow):
         self.central_widget.setLayout(self.v_layout)
 
         self.setCentralWidget(self.central_widget)
+
+    def adjsutFixedSize(self):
+        self.adjustSize()
+        self.setFixedSize(self.width(), self.height())
