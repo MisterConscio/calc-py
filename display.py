@@ -1,11 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLineEdit
 
-FS_700 = 40
-FS_400 = 24
-FS_300 = 18
-PADDING = 10
-MIN_WIDTH = 500
+from config import FS_700, MIN_WIDTH, PADDING
 
 
 class Display(QLineEdit):

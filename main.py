@@ -2,6 +2,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 from display import Display
+from info import Info
 
 from main_window import MainWindow
 
@@ -10,8 +11,11 @@ if __name__ == '__main__':
 
     window = MainWindow()
 
+    info = Info("42 * 2 = 84")
+    window.addToVLayout(info)
+
     display = Display()
-    window.v_layout.addWidget(display)
+    window.addToVLayout(display)
 
     window.adjsutFixedSize()
     window.show()
