@@ -4,15 +4,15 @@ from config import DARK_PRIMARY_COLOR, DARKER_PRIMARY_COLOR, PRIMARY_COLOR
 
 
 qss = f"""
-    PushButton[cssClass="specialButton"] {{
+    QPushButton[cssClass="specialButton"] {{
         color: #fff;
         background: {PRIMARY_COLOR};
     }}
-    PushButton[cssClass="specialButton"]:hover {{
+    QPushButton[cssClass="specialButton"]:hover {{
         color: #fff;
         background: {DARK_PRIMARY_COLOR};
     }}
-    PushButton[cssClass="specialButton"]:pressed {{
+    QPushButton[cssClass="specialButton"]:pressed {{
         color: #fff;
         background: {DARKER_PRIMARY_COLOR};
     }}
