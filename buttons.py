@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QGridLayout, QPushButton
 
 from config import FS_400
 from display import Display
-from utils import isEmpty, isNumOrDot
+from utils import isEmpty, isNumOrDot, isValidNumber
 
 
 class Button(QPushButton):
@@ -53,4 +53,10 @@ class ButtonsGrid(QGridLayout):
         return realSlot
 
     def _insertTextTodisplay(self, checked, button):
-        self.display.insert(button.text())
+        btnText = button.text()
+        newDisplayValue = self.display.text() + btnText
+
+        if not isValidNumber(newDisplayValue):
+            return
+
+        self.display.insert(btnText)
