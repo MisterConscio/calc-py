@@ -56,7 +56,14 @@ class ButtonsGrid(QGridLayout):
         self._equation = value
         self.info.setText(self._equation)
 
+    def catchSignal(self):
+        print("Sinal recebido ", type(self).__name__)
+
     def _makeGrid(self):
+        self.display.eqPressed.connect(self.catchSignal)
+        self.display.delPressed.connect(self.display.backspace)
+        self.display.clearPressed.connect(self.catchSignal)
+
         for i, row in enumerate(self._gridMask):
             for j, btn_text in enumerate(row):
                 btn = Button(btn_text)
