@@ -42,7 +42,7 @@ class ButtonsGrid(QGridLayout):
             ["7", "8", "9", "*"],
             ["4", "5", "6", "-"],
             ["1", "2", "3", "+"],
-            ["", "0", ".", "="],
+            ["N", "0", ".", "="],
         ]
 
         self._makeGrid()
@@ -90,6 +90,9 @@ class ButtonsGrid(QGridLayout):
         if text == "<":
             self._connectBtnClicked(btn, self.display.backspace)
 
+        if text == "N":
+            self._connectBtnClicked(btn, self._invertNumber)
+
         if text in "+-/*^":
             self._connectBtnClicked(btn, self._makeSlot(self._configLeftOperator, text))
 
@@ -103,6 +106,24 @@ class ButtonsGrid(QGridLayout):
             func(*args, **kwargs)
 
         return realSlot
+
+    @Slot()
+    def _invertNumber(self):
+        displayText = self.display.text()
+
+        if not isValidNumber(displayText):
+            return
+
+        number = float(displayText)
+
+        isInt = number.is_integer()
+
+        if isInt:
+            number = int(number)
+
+        newNumber = number * -1
+
+        self.display.setText(str(newNumber))
 
     @Slot()
     def _insertToDisplay(self, text):
