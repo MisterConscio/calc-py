@@ -7,7 +7,7 @@ from config import FS_400
 from display import Display
 from info import Info
 from main_window import MainWindow
-from utils import isEmpty, isNumOrDot, isValidNumber
+from utils import convertToNumber, isEmpty, isNumOrDot, isValidNumber
 
 
 class Button(QPushButton):
@@ -61,7 +61,7 @@ class ButtonsGrid(QGridLayout):
 
     def _makeGrid(self):
         self.display.eqPressed.connect(self._eq)
-        self.display.delPressed.connect(self.display.backspace)
+        self.display.delPressed.connect(self._backspace)
         self.display.clearPressed.connect(self._clear)
         self.display.inputPressed.connect(self._insertToDisplay)
         self.display.operatorPressed.connect(self._configLeftOperator)
@@ -88,7 +88,7 @@ class ButtonsGrid(QGridLayout):
             self._connectBtnClicked(btn, self._clear)
 
         if text == "<":
-            self._connectBtnClicked(btn, self.display.backspace)
+            self._connectBtnClicked(btn, self._backspace)
 
         if text == "N":
             self._connectBtnClicked(btn, self._invertNumber)
@@ -114,12 +114,7 @@ class ButtonsGrid(QGridLayout):
         if not isValidNumber(displayText):
             return
 
-        number = float(displayText)
-
-        isInt = number.is_integer()
-
-        if isInt:
-            number = int(number)
+        number = convertToNumber(displayText)
 
         newNumber = number * -1
 
@@ -133,6 +128,7 @@ class ButtonsGrid(QGridLayout):
             return
 
         self.display.insert(text)
+        self.display.setFocus()
 
     @Slot()
     def _clear(self):
@@ -141,18 +137,20 @@ class ButtonsGrid(QGridLayout):
         self._op = None
         self.equation = "Equação"
         self.display.clear()
+        self.display.setFocus()
 
     @Slot()
     def _configLeftOperator(self, text):
         displayText = self.display.text()
         self.display.clear()
+        self.display.setFocus()
 
         if not isValidNumber(displayText) and self._left is None:
             self._showDialog("info", "Nada foi digitado")
             return
 
         if self._left is None:
-            self._left = float(displayText)
+            self._left = convertToNumber(displayText)
 
         self._op = text
         self.equation = f"{self._left} {self._op} ??"
@@ -161,18 +159,19 @@ class ButtonsGrid(QGridLayout):
     def _eq(self):
         displayText = self.display.text()
 
-        if not isValidNumber(displayText):
+        if not isValidNumber(displayText) or self._left is None:
             self._showDialog("info", "Conta incompleta")
             return
 
-        self._right = float(displayText)
+        self._right = convertToNumber(displayText)
         self.equation = f"{self._left} {self._op} {self._right}"
 
         result = "error"
 
         try:
-            if "^" in self.equation and isinstance(self._left, float):
+            if "^" in self.equation and isinstance(self._left, (int, float)):
                 result = math.pow(self._left, self._right)
+                result = convertToNumber(str(result))
             else:
                 result = eval(self.equation)
         except ZeroDivisionError:
@@ -184,9 +183,15 @@ class ButtonsGrid(QGridLayout):
         self.info.setText(f"{self.equation} = {result}")
         self._left = result
         self._right = None
+        self.display.setFocus()
 
         if result == "error":
             self._left = None
+
+    @Slot()
+    def _backspace(self):
+        self.display.backspace()
+        self.display.setFocus()
 
     def _showDialog(self, type: str, text):
         msgBox = self.window.makeMsgBox()
